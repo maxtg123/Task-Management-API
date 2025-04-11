@@ -138,91 +138,7 @@ IntelliJ IDEA: Recommended IDE
 Setup
 Back-end
 Clone the repository:
-bash
 
-Collapse
-
-Wrap
-
-Copy
-git clone https://github.com/maxtg123/Task-Management-API.git
-cd Task-Management-API
-Install MySQL:
-Install MySQL locally or use Docker:
-bash
-
-Collapse
-
-Wrap
-
-Copy
-docker run -p 3306:3306 --name mysql-container -e MYSQL_ROOT_PASSWORD=your_password -e MYSQL_DATABASE=task_management_db -d mysql:latest
-Configure application.properties:
-Edit src/main/resources/application.properties:
-properties
-
-Collapse
-
-Wrap
-
-Copy
-spring.datasource.url=jdbc:mysql://localhost:3306/task_management_db
-spring.datasource.username=root
-spring.datasource.password=your_password
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
-Build the project:
-bash
-
-Collapse
-
-Wrap
-
-Copy
-mvn clean install
-Front-end
-Navigate to frontend folder (if separate):
-bash
-
-Collapse
-
-Wrap
-
-Copy
-cd frontend
-Install dependencies:
-bash
-
-Collapse
-
-Wrap
-
-Copy
-npm install
-Running the Application
-Run Back-end:
-In IntelliJ: Open TaskManagementApiApplication.java, right-click > Run.
-Or via terminal:
-bash
-
-Collapse
-
-Wrap
-
-Copy
-mvn spring-boot:run
-Run Front-end:
-In terminal:
-bash
-
-Collapse
-
-Wrap
-
-Copy
-cd frontend
-ng serve
 Open browser: http://localhost:4200.
 API Endpoints
 Method	Endpoint	Description	Request Body (Form)	Headers
@@ -232,6 +148,7 @@ GET	/api/tasks	Get all tasks for user		Authorization: Bearer <token>
 POST	/api/tasks	Create a new task	title, description	Authorization: Bearer <token>
 PUT	/api/tasks/{id}	Update a task	title, description, completed	Authorization: Bearer <token>
 DELETE	/api/tasks/{id}	Delete a task		Authorization: Bearer <token>
+
 Database Schema
 Table users:
 id (PK, Long)
