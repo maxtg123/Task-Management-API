@@ -2,166 +2,221 @@
 # Task Management API
 
 A simple task management application built with a Spring Boot back-end and Angular front-end. This project provides user authentication (register/login) and task management (create, read, update, delete) functionalities, with data stored in a MySQL database.
+Table of Contents
+Features
 
-## Table of Contents
-- [Features](#features)
-- [Architecture](#architecture)
-- [Diagram](#diagram)
-- [Functional Flow](#functional-flow)
-- [Technologies](#technologies)
-- [Prerequisites](#prerequisites)
-- [Setup](#setup)
-- [Running the Application](#running-the-application)
-- [API Endpoints](#api-endpoints)
-- [Database Schema](#database-schema)
-- [Contributing](#contributing)
-- [License](#license)
+Architecture
 
-## Features
-- **User Authentication**: Register and login with JWT-based authentication.
-- **Task Management**: Create, view, update, and delete tasks associated with authenticated users.
-- **Responsive UI**: Built with Angular for a user-friendly interface.
+Diagram
 
-## Architecture
-The application follows a monolithic architecture:
-- **Front-end**: Angular handles the UI and sends HTTP requests to the back-end.
-- **Back-end**: Spring Boot processes requests through layered components:
-  - **Controller Layer**: Handles REST API endpoints.
-  - **Service Layer**: Contains business logic (authentication, task operations).
-  - **Repository Layer**: Interacts with the MySQL database.
-- **Database**: MySQL stores user and task data.
+Functional Flow
 
-## Diagram
-The architecture diagram displays the following components:
-- **User**: The individual interacting with the system.
-- **Angular Frontend**: Sends requests to the backend.
-- **Spring Boot Backend**: A monolith with multiple layers:
-  - **Controller Layer**: Receives requests from the frontend.
-  - **Service Layer**: Processes logic (authentication, task operations).
-  - **Repository Layer**: Interacts with the database.
-- **MySQL Database**: Stores the `users` and `tasks` tables.
+Technologies
 
-### PlantUML Code for Diagram
-```plantuml
+Prerequisites
+
+Setup
+
+Running the Application
+
+API Endpoints
+
+Swagger Documentation
+
+Database Schema
+
+Contributing
+
+License
+
+Features
+✅ User Authentication: JWT-based register/login.
+
+✅ Task Management: Create, view, update, and delete tasks.
+
+✅ Swagger UI: Interactive API documentation and testing.
+
+✅ Responsive Frontend: Built using Angular.
+
+Architecture
+This is a monolithic application with:
+
+Frontend: Angular (UI layer).
+
+Backend: Spring Boot (REST API with layered architecture).
+
+Database: MySQL.
+
+Layers in the back-end:
+
+Controller Layer: Handles incoming API requests.
+
+Service Layer: Business logic.
+
+Repository Layer: Data persistence.
+
+Diagram
+plantuml
+Copy
+Edit
 @startuml
 actor User
 
 package "Task-Management-API (Monolith)" {
-  [Angular Frontend] #--> [Spring Boot Backend]
-  
-  package "Spring Boot Backend" {
-    [Controller Layer] --> [Service Layer]
-    [Service Layer] --> [Repository Layer]
-    [Repository Layer] --> [MySQL Database]
-  }
+[Angular Frontend] #--> [Spring Boot Backend]
+
+package "Spring Boot Backend" {
+[Controller Layer] --> [Service Layer]
+[Service Layer] --> [Repository Layer]
+[Repository Layer] --> [MySQL Database]
+}
 }
 
 [User] --> [Angular Frontend]
 
 note right of [Angular Frontend]
-  Sends HTTP requests (REST API)
-  to backend via endpoints:
-  - /api/auth/register
-  - /api/auth/login
-  - /api/tasks (GET, POST, PUT, DELETE)
-end note
+Sends HTTP requests to:
+- /api/auth/*
+- /api/tasks
+  end note
+  @enduml
+  Functional Flow
+  a. Register
+  User fills out form.
 
-note right of [Spring Boot Backend]
-  Processes logic:
-  - Authentication (JWT)
-  - Task CRUD
-  - Stores data in MySQL
-end note
+Frontend sends POST /api/auth/register.
 
+Backend creates user, returns JWT.
 
-Functional Flow
-Below is the functional flow of the Task-Management-API in its monolithic form:
+Frontend saves token in localStorage.
 
-a. Register
-User: Enters username, password, and email on the Angular interface.
-Angular Frontend: Sends a POST /api/auth/register request with form data (application/x-www-form-urlencoded).
-Spring Boot Backend:
-AuthController: Receives the request and calls AuthService.
-AuthService: Encrypts the password (using BCrypt), creates a User object, and saves it to the users table via UserRepository.
-JwtUtil: Generates a JWT token based on the username.
-Returns the token to the frontend.
-Angular Frontend: Stores the token in localStorage and redirects to /tasks.
 b. Login
-User: Enters username and password.
-Angular Frontend: Sends a POST /api/auth/login request.
-Spring Boot Backend:
-AuthController: Calls AuthService.
-AuthService: Retrieves the User from UserRepository, verifies the password, and generates a token using JwtUtil.
-Returns the token.
-Angular Frontend: Stores the token and redirects to /tasks.
-c. Task Management (CRUD)
-User: Interacts with the Angular interface (view, add, update, delete tasks).
-Angular Frontend:
-Sends requests to:
-GET /api/tasks: Retrieves the list of tasks.
-POST /api/tasks: Creates a new task.
-PUT /api/tasks/{id}: Updates a task.
-DELETE /api/tasks/{id}: Deletes a task.
-Attaches the Authorization: Bearer <token> header.
-Spring Boot Backend:
-TaskController: Receives the request, extracts the username from the token using JwtUtil, and retrieves the User via UserRepository.
-TaskService: Performs CRUD operations on Task objects through TaskRepository.
-TaskRepository: Saves or retrieves data from the tasks table in MySQL.
-Returns the result (task list, new task, or HTTP 200 status).
-Angular Frontend: Updates the UI based on the response.
-d. Data Storage
-MySQL Database:
-Table users: Stores id, username, password, and email.
-Table tasks: Stores id, title, description, completed, createdAt, and user_id (foreign key referencing users).
-Technologies
-Back-end:
-Spring Boot 3.4.4
-Spring Data JPA
-Spring Security (JWT)
-MySQL Connector
-Lombok
-Front-end:
-Angular 17.x
-TypeScript
-HTML/CSS
-Database: MySQL 8.x
-Tools:
-Maven (build tool)
-IntelliJ IDEA (IDE)
-Node.js/NPM (for Angular)
-Prerequisites
-Java: JDK 17 or higher
-Node.js: 20.x (LTS) or higher
-MySQL: 8.x
-Maven: 3.8.x or higher
-IntelliJ IDEA: Recommended IDE
-Setup
-Back-end
-Clone the repository:
+User submits login credentials.
 
-Open browser: http://localhost:4200.
+Frontend sends POST /api/auth/login.
+
+Backend authenticates, returns JWT.
+
+Frontend stores token and navigates to dashboard.
+
+c. Task Management (CRUD)
+GET /api/tasks
+
+POST /api/tasks
+
+PUT /api/tasks/{id}
+
+DELETE /api/tasks/{id}
+
+All require the Authorization: Bearer <token> header.
+
+Technologies
+Back-end
+Spring Boot 3.4.4
+
+Spring Data JPA
+
+Spring Security (JWT)
+
+Springdoc OpenAPI (Swagger)
+
+MySQL Connector
+
+Lombok
+
+Front-end
+Angular 17.x
+
+TypeScript, HTML, CSS
+
+Database
+MySQL 8.x
+
+Tools
+Maven
+
+IntelliJ IDEA
+
+Node.js / NPM
+
+Prerequisites
+JDK 17+
+
+Node.js 20+
+
+MySQL 8+
+
+Maven 3.8+
+
+IntelliJ IDEA
+
+Setup
+Backend
+bash
+Copy
+Edit
+git clone <repository-url>
+cd backend
+mvn clean install
+Frontend
+bash
+Copy
+Edit
+cd frontend
+npm install
+ng serve
+Access at: http://localhost:4200
+
+Running the Application
+Start MySQL and ensure schema is set up.
+
+Run the Spring Boot app.
+
+Open the Angular app in the browser.
+
 API Endpoints
-Method	Endpoint	Description	Request Body (Form)	Headers
-POST	/api/auth/register	Register a new user	username, password, email	
-POST	/api/auth/login	Login and get JWT token	username, password	
-GET	/api/tasks	Get all tasks for user		Authorization: Bearer <token>
-POST	/api/tasks	Create a new task	title, description	Authorization: Bearer <token>
-PUT	/api/tasks/{id}	Update a task	title, description, completed	Authorization: Bearer <token>
-DELETE	/api/tasks/{id}	Delete a task		Authorization: Bearer <token>
+
+Method	Endpoint	Description	Auth Required
+POST	/api/auth/register	Register new user	❌
+POST	/api/auth/login	Authenticate user	❌
+GET	/api/tasks	Get all tasks	✅
+POST	/api/tasks	Create a new task	✅
+PUT	/api/tasks/{id}	Update task by ID	✅
+DELETE	/api/tasks/{id}	Delete task by ID	✅
+Swagger Documentation
+📘 Access your API docs here:
+
+👉 http://localhost:8080/swagger-ui.html
+👉 http://localhost:8080/api-docs
+
+Includes all endpoints with test capabilities and schema visualization.
 
 Database Schema
-Table users:
-id (PK, Long)
-username (String, unique)
-password (String, hashed)
-email (String, unique)
-Table tasks:
-id (PK, Long)
-title (String)
-description (String)
-completed (Boolean)
-createdAt (DateTime)
-user_id (FK to users.id)
+users table
+id: Long (PK)
 
+username: String (unique)
 
+password: String (hashed)
+
+email: String (unique)
+
+tasks table
+id: Long (PK)
+
+title: String
+
+description: String
+
+completed: Boolean
+
+createdAt: DateTime
+
+user_id: FK → users.id
+
+Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+License
+MIT
 
